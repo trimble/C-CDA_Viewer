@@ -1187,9 +1187,25 @@
                <xsl:value-of select='n1:text/text()'/>
             </pre>
          </xsl:when>
-         <xsl:otherwise>
-            <CENTER>Cannot display the text</CENTER>
-         </xsl:otherwise>
+         <xsl:when test="starts-with(n1:text/@mediaType,'image/')">
+          <img>
+            <xsl:attribute name="alt"/>
+            <xsl:attribute name="title"/>
+            <xsl:attribute name="src">
+              <xsl:value-of select="concat('data:',n1:text/@mediaType,';base64,',n1:text)"/>
+            </xsl:attribute>
+          </img>
+        </xsl:when>
+        <xsl:when test="n1:text/@representation='B64'">
+          <iframe name="nonXMLBody" id="nonXMLBody" width="100%" height="600">
+            <xsl:attribute name="src">
+              <xsl:value-of select="concat('data:',n1:text/@mediaType,';base64,',n1:text)"/>
+            </xsl:attribute>
+          </iframe>
+        </xsl:when>
+        <xsl:otherwise>
+          <CENTER>Cannot display the text</CENTER>
+        </xsl:otherwise>
       </xsl:choose>
    </xsl:template>
    <!-- top level component/section: display title and text,
